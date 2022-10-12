@@ -10,7 +10,7 @@ Context `{System : system X}.
 
 Notation db_apart := (sc db_dapart).
 
-Theorem semibranching_implies_directed_semibranching :
+Theorem semibranching_implies_directed_branching :
   ∀ p q, sb_apart p q → db_apart p q.
 Proof.
   eapply sb_apart_strong_ind.
@@ -44,7 +44,7 @@ Proof.
     * destruct Hr; [left|right]; done.
 Qed.
 
-Lemma db_dapart_implies_semibranching_lemma :
+Lemma directed_branching_implies_semibranching_lemma :
   ∀ p1 q1, db_dapart p1 q1 → semibranching.EvSufficient p1 q1.
 Proof.
   eapply db_dapart_strong_ind.
@@ -79,16 +79,16 @@ Proof.
     + right. by eapply sb_apart_sym, sb_apart_from_sufficient. 
 Qed.
 
-Lemma db_dapart_implies_semibranching {p1 q1} :
+Lemma directed_branching_implies_semibranching {p1 q1} :
   db_dapart p1 q1 → sb_apart p1 q1.
 Proof.
-  intros H. by eapply sb_apart_from_sufficient, db_dapart_implies_semibranching_lemma.
+  intros H. by eapply sb_apart_from_sufficient, directed_branching_implies_semibranching_lemma.
 Qed.
 
 Theorem db_apart_iff_sb_apart {p q} : db_apart p q ↔ sb_apart p q.
 Proof. split.
-  - intros [|]; eauto using db_dapart_implies_semibranching with hints.
-  - by eapply semibranching_implies_directed_semibranching.
+  - intros [|]; eauto using directed_branching_implies_semibranching with hints.
+  - by eapply semibranching_implies_directed_branching.
 Qed.
 
 End Equivalence.

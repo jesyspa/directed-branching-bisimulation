@@ -23,7 +23,7 @@ Proof. eapply nonreflexive.directed_branching.db_dapart_strong_ind'.
     assert (Hp12' : WithRefl silent p1 p2) by by eapply WithRefl_can_step.
     eapply Fwd; [done|].
     intros q2 Hq12. rewrite <- WithRefl_rtc_can_step in Hq12.
-    intros q3 [Hq23|[_ <-]]; unfold directed_branching.Downstream_relation.
+    intros q3 [Hq23|[_ <-]]; unfold LL_RR_coRR_relation.
     { specialize (HQ q2 Hq12 q3 Hq23) as [|]; [by left|by right]. }
     eapply rtc_inv_r in Hq12 as [<-|(qm & Hq1m & Hqm2)].
     { right. by right. }

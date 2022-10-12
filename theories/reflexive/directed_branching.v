@@ -8,28 +8,7 @@ From bisimulations Require Import paths.
 Section DirectedBranchingApart.
 Context `{ReflSystem : @refl_system X System}.
 
-Local Definition Downstream_relation (R : relation X) p1 p2 q1 q2 : Prop := R p1 q1 ∨ sc R p2 q2.
-Lemma Downstream_relation_weaken_minimal (R1 R2 : relation X) p1 p2 q1 q2 :
-  (R1 p1 q1 → R2 p1 q1) → (R1 p2 q2 → R2 p2 q2) → (R1 q2 p2 → R2 q2 p2) →
-  Downstream_relation R1 p1 p2 q1 q2 → Downstream_relation R2 p1 p2 q1 q2.
-Proof. intros H1 H2 H3 [|[]]; [left|right;left|right;right]; eauto. Qed.
-Lemma Downstream_relation_closed_implication (R1 R2 : relation X) :
-  (∀ p q, R1 p q → R2 p q) → ∀ p1 p2 q1 q2, Downstream_relation R1 p1 p2 q1 q2 → Downstream_relation R2 p1 p2 q1 q2.
-Proof. intros ?????. eauto using Downstream_relation_weaken_minimal. Qed.
-
-Local Definition Downstream_property l (R : relation X) p1 p2 : X → Prop :=
-  persistently_for_all_steps l (Downstream_relation R p1 p2).
-
-Lemma Downstream_property_closed_implication l (R1 R2 : relation X) :
-  (∀ p q, R1 p q → R2 p q) → ∀ p1 p2 q1, Downstream_property l R1 p1 p2 q1 → Downstream_property l R2 p1 p2 q1.
-Proof. intros ????. by eapply persistently_for_all_steps_closed_implication_weak, Downstream_relation_closed_implication. Qed.
-
-Instance Downstream_property_closed_down {R : relation X} {l p1 p2} :
-  Proper (rtc (can_step silent) ==> impl) (Downstream_property l R p1 p2).
-Proof. eapply persistently_closed_down. Qed.
-
-Notation Silent_property := (Downstream_property silent).
-Notation Loud_property := (Downstream_property loud).
+Notation Downstream_property l R p1 p2 := ((Downstream_property l (LL_RR_coRR_relation p1 p2) R)).
 
 (* db_dapart a b := a can do something b can't do *)
 Inductive db_dapart : X → X → Prop :=
@@ -62,14 +41,15 @@ Proof.
   intros P CaseFwd.
   eapply db_dapart_strong_ind; eauto.
   intros; eapply CaseFwd; try done.
-  eapply Downstream_property_closed_implication; [|exact H0].
+  eapply Downstream_property_closed_implication;
+    [eapply LL_RR_coRR_relation_MBRT| |done].
   unfold rel_join. tauto.
 Qed.
 
 Lemma Downstream_property_closed_rel_join {R1 R2 : relation X} {l p1 p2 q1} :
   Downstream_property l (rel_join R1 R2) p1 p2 q1 →
   Downstream_property l R1 p1 p2 q1.
-Proof. eapply Downstream_property_closed_implication. by intros p q []. Qed.
+Proof. eapply Downstream_property_closed_implication; [eapply LL_RR_coRR_relation_MBRT|]. by intros p q []. Qed.
 
 Instance db_dapart_extend_forward_one {p1} :
   Proper (can_step silent ==> impl) (db_dapart p1).
