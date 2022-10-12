@@ -1,0 +1,18 @@
+# Coq
+build-dep/
+*.cache
+.coqdeps.d
+.coq-native/
+*.crashcoqide
+*.glob
+Makefile.coq
+Makefile.coq.conf
+.Makefile.coq.d
+*.v.d
+*.vio
+*.vo
+*.vok
+*.vos
+
+# Editors
+.vscode/

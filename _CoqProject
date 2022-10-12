@@ -1,0 +1,22 @@
+-Q theories bisimulations
+
+# Allow commands like Restart (taken from pv)
+-arg -async-proofs-cache -arg force
+
+theories/prelude.v
+theories/system.v
+theories/relations.v
+theories/paths.v
+theories/formulas.v
+theories/nonreflexive/semibranching.v
+theories/nonreflexive/branching.v
+theories/nonreflexive/directed_branching.v
+theories/nonreflexive/symmetric_closure.v
+theories/reflexive/branching.v
+theories/reflexive/branching_vs_semibranching.v
+theories/reflexive/directed_branching.v
+theories/reflexive/reflexive_closure_b.v
+theories/reflexive/reflexive_closure_db.v
+theories/reflexive/hmlu.v
+theories/reflexive/phmlu.v
+theories/reflexive/distinguish.v
